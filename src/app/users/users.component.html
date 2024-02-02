@@ -1,16 +1,44 @@
 <!-- <git-users-card></git-users-card> -->
 
-<div>
-    <main class="flex justify-center flex-col max-w-[864px] mx-auto p-6">
+<div class="bg-baseBackground-950">
+    <main class="flex flex-col max-w-[864px] mx-auto p-6 justify-center">
 
-        <section class="flex  justify-between">
+        <section class="justify-between flex">
             <h1 class="text-baseSubTitle-200 text-lg font-bold">Usuários</h1>
-            <span class="text-sm text-baseSpan-800"> 40 usuários</span>
+            <span class="text-sm text-baseSpan-800"> {{users?.length}} usuários
+            </span>
         </section>
 
-        <input
-            class="mt-3 rounded-md h-12 p-4 border-solid border-2 focus:outline-none focus:border-blue-500 border-baseBorder-950 bg-baseInput-950 placeholder-baseLabel-700"
-            type="text" placeholder="Buscar usuário" />
+
+        <section>
+            <git-users-input class="w-full" type="search" placeholder="Buscar usuário"
+                [control]="control"></git-users-input>
+
+
+            <div infinite-scroll [infiniteScrollDistance]="distance" [infiniteScrollThrottle]="throttle"
+                (scrolled)="onScroll()">
+                <div class="md:grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    @if(!user && !isNotFound) {
+                    @for (user of users; track user.id) {
+                    <git-users-card-list [url]="user?.html_url" [avatarUrl]="user?.avatar_url" [login]="user?.login">
+                    </git-users-card-list>
+                    }
+                    }
+                </div>
+            </div>
+
+
+
+            @if (user) {
+            <git-users-card [name]="user?.name" [url]="user?.html_url" [avatarUrl]="user?.avatar_url" [bio]="user?.bio"
+                [login]="user?.login" [followers]="user?.followers">
+            </git-users-card>
+            } @else if (isNotFound) {
+            <p> nao encontrou</p>
+            }
+
+        </section>
+
 
     </main>
 
