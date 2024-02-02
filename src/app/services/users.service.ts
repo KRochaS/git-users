@@ -10,8 +10,8 @@ export class UsersService {
 
     constructor(private httpClient: HttpClient) { }
 
-    getUsers(): Observable<Users[]> {
-        return this.httpClient.get<Users[]>('https://api.github.com/users');
+    getUsers(page: number, since: number = 1): Observable<Users[]> {
+        return this.httpClient.get<Users[]>(`https://api.github.com/users?per_page=20&page=${page}&since=${since}`);
     }
 
     getUser(user: string) {
