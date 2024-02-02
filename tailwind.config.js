@@ -32,15 +32,18 @@ module.exports = {
                     950: '#1C2F41',
                 },
                 baseCard: {
-                    950: '#0B1B2B',
+                    950: '#131B2E',
                 },
                 baseBackground: {
-                    950: '#071422',
+                    950: '#0F172A',
                 },
                 baseInput: {
                     950: '#040F1A',
                 },
             },
+            boxShadow: {
+                lg: '0px 2px 28px 0px rgba(0, 0, 0, 0.20)'
+            }
         },
     },
     plugins: [],
