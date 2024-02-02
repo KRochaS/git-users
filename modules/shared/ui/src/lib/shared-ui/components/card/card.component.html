@@ -1,1 +1,33 @@
-<p> card works!</p>
+<div class="py-4 px-6 lg:py-8 lg:px-10 bg-baseCard-950 mt-12 rounded-lg shadow-lg">
+    <div class="flex gap-8">
+        <img class="w-28 h-28 rounded-md lg:w-36 lg:h-36" [src]="avatarUrl" alt="profile image">
+        <div class="flex flex-col gap-6 w-screen">
+            <div>
+                <div class="flex justify-between">
+                    <h1 class="font-bold lg:text-2xl text-baseTitle-100 md:text-base"> {{name ? name : '-'}}</h1>
+                    <a class="flex gap-1 items-center" [href]="url" target="_blank">
+                        <span class="text-xs lg:text-sm text-blue-500">GITHUB</span>
+                        <img class="h-3 w-3" src="../../../../assets/icons/link.svg" alt="link icon">
+                    </a>
+
+                </div>
+                <p class="text-xs lg:text-lg md:text-base"> {{bio ? bio : '-'}}</p>
+            </div>
+
+
+            <div class="flex gap-2 lg:gap-4 flex-col lg:flex-row">
+                <div class="flex gap-2 items-center">
+                    <img class="h-4 w-4" src="../../../../assets/icons/github.svg" alt="github icon">
+                    <span class="text-xs lg:text-sm text-baseSubTitle-200"> {{login ? login : '-'}}</span>
+                </div>
+
+                <div class="flex gap-2 items-center">
+                    <img class="h-4 w-4" src="../../../../assets/icons/followers.svg" alt="followers icon">
+                    <span class="text-xs lg:text-sm text-baseSubTitle-200"> {{followers ? followers : '-'}}
+                        seguidores</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
