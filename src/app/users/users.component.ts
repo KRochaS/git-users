@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CardComponent, CardListComponent, InputComponent, LoadingModule } from '@git-users/shared-ui';
+import { CardComponent, CardListComponent, InputComponent, LoadingModule, NotFoundComponent } from '@git-users/shared-ui';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ToastrService } from 'ngx-toastr';
 import { EMPTY, Observable, Subject, catchError, debounceTime, filter, retry, switchMap, takeUntil } from 'rxjs';
 
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { User, Users } from '../models/users';
 import { UsersService } from '../services/users.service';
 
@@ -19,7 +20,8 @@ import { UsersService } from '../services/users.service';
         CardComponent,
         CardListComponent,
         LoadingModule,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        NotFoundComponent,
     ],
     templateUrl: './users.component.html',
     styleUrl: './users.component.scss',
@@ -28,7 +30,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     public user: User | null = null;
     public control = new FormControl('', { nonNullable: true });
     private user$!: Observable<User>;
-    // private users$!: Observable<Users[]>;
     private destroy$ = new Subject<void>();
     public isNotFound: boolean = false;
     public page = 1;
@@ -36,10 +37,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     public throttle = 0;
     public distance = 2;
 
-    constructor(private usersService: UsersService) { }
+    constructor(private usersService: UsersService, private toastr: ToastrService) { }
 
     ngOnInit() {
-        // this.users$ = this.usersService.getUsers(this.page);
         this.getUsers(this.page);
 
         this.user$ = this.control.valueChanges.pipe(
@@ -51,9 +51,16 @@ export class UsersComponent implements OnInit, OnDestroy {
                         if (error.error.message === 'Not Found') {
                             this.isNotFound = true;
                             this.user = null;
+                        } else {
+                            this.toastr.error('Ocorreu um erro ao buscar o usuário. Tente novamente',
+                                'Erro!'
+
+                            );
                         }
+
                         return EMPTY;
                     })
+
                 );
             }),
             retry()
@@ -82,9 +89,17 @@ export class UsersComponent implements OnInit, OnDestroy {
 
 
     public getUsers(page: number): void {
-        this.usersService.getUsers(page).subscribe((users: Users[]) => {
-            this.users = users;
-            this.user = null;
+        this.usersService.getUsers(page).pipe(
+            takeUntil(this.destroy$),
+        ).subscribe({
+            next: (users: Users[]) => {
+                this.users = users;
+                this.user = null;
+                this.isNotFound = false;
+            },
+            error: () => {
+                this.toastr.error('Atualize a página', 'Ocorreu um erro!');
+            }
         });
     }
 
@@ -92,7 +107,9 @@ export class UsersComponent implements OnInit, OnDestroy {
         const since = this.users[this.users.length - 1].id;
         this.usersService
             .getUsers(++this.page, since)
-            .subscribe((users: Users[]) => {
+            .pipe(
+                takeUntil(this.destroy$),
+            ).subscribe((users: Users[]) => {
                 this.users.push(...users);
             });
     }
