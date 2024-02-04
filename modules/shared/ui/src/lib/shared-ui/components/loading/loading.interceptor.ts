@@ -3,24 +3,6 @@ import { inject } from '@angular/core';
 import { finalize } from 'rxjs';
 import { LoadingService } from './loading.service';
 
-
-// @Injectable()
-// export class LoadingInterceptor implements HttpInterceptor {
-
-
-
-//     constructor(public loadingService: LoadingService) { }
-
-//     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//         this.loadingService.show();
-
-//         return next.handle(req).pipe(finalize(() => this.loadingService.hide());
-//     }
-
-
-
-// }
-
 export const LoadingInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
     const loadingService = inject(LoadingService);
     loadingService.show();
