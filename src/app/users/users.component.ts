@@ -45,24 +45,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.user$ = this.control.valueChanges.pipe(
             filter(text => text.length > 1),
             debounceTime(400),
-            switchMap(text => {
-                return this.usersService.getUser(text).pipe(
-                    catchError(error => {
-                        if (error.error.message === 'Not Found') {
-                            this.isNotFound = true;
-                            this.user = null;
-                        } else {
-                            this.toastr.error('Ocorreu um erro ao buscar o usuário. Tente novamente',
-                                'Erro!'
-
-                            );
-                        }
-
-                        return EMPTY;
-                    })
-
-                );
-            }),
+            switchMap(text => this.handleUserRequest(text)),
             retry()
 
         )
@@ -76,6 +59,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
 
 
+
         this.user$.pipe(
             takeUntil(this.destroy$),
         ).subscribe({
@@ -85,6 +69,25 @@ export class UsersComponent implements OnInit, OnDestroy {
             }
         });
 
+    }
+
+    private handleUserRequest(text: string): Observable<User> {
+        return this.usersService.getUser(text).pipe(
+            catchError(error => {
+                if (error.error.message === 'Not Found') {
+                    this.isNotFound = true;
+                    this.user = null;
+                } else {
+                    this.toastr.error('Ocorreu um erro ao buscar o usuário. Tente novamente',
+                        'Erro!'
+
+                    );
+                }
+
+                return EMPTY;
+            })
+
+        );
     }
 
 
