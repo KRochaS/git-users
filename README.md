@@ -76,7 +76,7 @@ Desenvolvido utilizando TailwindCSS aplicando o conceito de Mobile First
  <img src="https://github.com/KRochaS/git-users/blob/master/.github/cypress-03.PNG" height="400" >
  <img src="https://github.com/KRochaS/git-users/blob/master/.github/cypress.gif" height="400"/>
 
-## :test_tube: Arquitetura com NX
+## :gear: Arquitetura com NX
 Ferramenta que facilita o desenvolvimento de aplicações em monorepo, fornecendo funcionalidades adicionais e otimizações para o desenvolvimento em larga escala.
 No contexto do projeto, uma biblioteca (lib) foi criada, chamada "shared-ui", que centraliza e disponibiliza todos os componentes compartilhados da aplicação.
 
