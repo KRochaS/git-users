@@ -71,6 +71,8 @@ Desenvolvido utilizando TailwindCSS aplicando o conceito de Mobile First
 
 
 ## :test_tube: Testes Unitários e Testes E2E com Cypress
+
+ <img src="https://github.com/KRochaS/git-users/blob/master/.github/tests.png" height="400" >
  <img src="https://github.com/KRochaS/git-users/blob/master/.github/cypress-01.PNG" height="400" >
  <img src="https://github.com/KRochaS/git-users/blob/master/.github/cypress-02.PNG" height="400" >
  <img src="https://github.com/KRochaS/git-users/blob/master/.github/cypress-03.PNG" height="400" >
